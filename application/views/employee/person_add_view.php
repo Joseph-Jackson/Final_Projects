@@ -93,7 +93,7 @@
                                         <?php foreach($countries as $row)
                                         {
                                          ?>
-                                           <option value="<?php echo $row->id; ?>"><?php echo $row->Country_name; ?></option>
+                                           <option value="<?php echo $row->Country_name; ?>"><?php echo $row->Country_name; ?></option>
                                            <?php
                                         }
                                       

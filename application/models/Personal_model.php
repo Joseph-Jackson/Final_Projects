@@ -66,8 +66,9 @@ class Personal_model extends CI_Model
 	public function get_employees()
 	{
 		$this->db->select('*');
-		$this->db->from('employee,person');
+		$this->db->from('employee,person,payroll_salary_scale');
 		$this->db->where('employee.employee_id = person.person_id');
+		$this->db->where('employee.salary_scale_id = payroll_salary_scale.salary_scale_id');
 		$result =$this->db->get();
 		return $result->result();
 
@@ -109,7 +110,8 @@ class Personal_model extends CI_Model
 	public function salary_scale()
 	{
 		$this->db->select('*');
-		$this->db->from('payroll_salary_scale');
+		$this->db->from('payroll_salary_scale,employee');
+		$this->db->where('payroll_salary_scale.salary_scale_id = employee.salary_scale_id');
 		$result =$this->db->get();
 		return $result->result();
 	}
@@ -222,6 +224,32 @@ class Personal_model extends CI_Model
 		$this->db->where('payroll.employee_id',$employee_id);
 		$result=$this->db->get('payroll,payroll_employee_deduction');
 		return $result->row();
+	}
+
+	public function getid($employee_id)
+	{
+		$this->db->select('*');
+		$this->db->from('person');
+		$this->db->where('person_id',$employee_id);
+		$resi = $this->db->get();
+		return $resi->result();
+	}
+
+	public function getitemid()
+	{
+		$this->db->select('*');
+		$this->db->from('payroll_deduction_item');
+		$resi = $this->db->get();
+		return $resi->result();
+	}
+	public function getsalary($employee_id)
+	{
+		$this->db->select('*');
+		$this->db->from('payroll_salary_scale,employee');
+		$this->db->where('payroll_salary_scale.salary_scale_id = employee.salary_scale_id');
+		$this->db->where('employee_id',$employee_id);
+		$resi = $this->db->get();
+		return $resi->result();
 	}
 }
 ?>

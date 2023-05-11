@@ -36,6 +36,7 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Phone Number</th>
+                                            <th> Basic Salary </th>
                                             <th class="actions">Action</th>
                                         </tr>
                                     </thead>
@@ -51,14 +52,15 @@
                                             <td><?php echo $row->surname; ?></td>
                                             <td><?php echo $row->email; ?></td>
                                             <td><?php echo $row->phone1; ?></td>
-                                            
+                                            <td><?php echo $row->scale_amount; ?></td>
+
                                             <td class="action-icons">
                                                 <a href="<?php echo base_url();?>AdminController/Update_employee/<?php echo $row->employee_id;?>"> 
                                                     <i title="Edit" class="fas fa-edit text-lg text-info"></i>
                                                 </a>
-                                                <a href="<?php echo base_url();?>AdminController/View_employee_profile/<?php echo $row->employee_id;?>"> 
-                                                    <i title="View" class="fas fa-eye text-lg text-info"></i>
-                                                </a>
+                                              <a href="<?php echo base_url();?>AdminController/View_employee_deductions/<?php echo $row->employee_id;?>"> 
+                                                    <i title="View employee Deduction & Allowances" class="fas fa-eye text-lg text-warning"></i>
+                                                </a> 
                                                 <a href="<?php echo base_url().'AdminController/delete_employee/'.$row->employee_id; ?>"> 
                                                     <i title="Delete" class=" fas fa-trash text-lg text-danger" ></i>    
                                                 </a>

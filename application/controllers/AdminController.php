@@ -25,20 +25,21 @@ class AdminController extends CI_Controller
 		$fun_name=debug_backtrace();
 		$total['emplo_total'] = $this->Personal_model->count_employee();
 		$total['users_total'] = $this->Login_model->count_users();
-		if($this->global_functions->is_allowed($fun_name[0]['function'])){
+		if($this->global_functions->is_allowed($fun_name[0]['function']))
+			{
 			$this->load->view('include/header');
 			$this->load->view('include/navigation');
 			$this->load->view('Home/dashboard',$total);
 			//$this->load->view('footer');
 			$this->load->view('include/source');
-	}
+			}
 		}
 		public function home()
 		{
 			$this->admindashboard();
 		}
 		public function persondata ()
-{
+		{
 			$country['countries'] = $this->Personal_model->get_countries();
 			$this->load->view('include/header');
 			$this->load->view('include/navigation');
@@ -46,7 +47,7 @@ class AdminController extends CI_Controller
 			$this->load->view('include/source');
 			$this->load->view('include/footer');
 
-}
+		}
 		//function to add person information
 		public function personvalidation()
 		{
@@ -106,7 +107,7 @@ class AdminController extends CI_Controller
 
 		 	);
 		 	
-		 	$this->Personal_model->insertdata($data);		 	
+		 	$this->Personal_model->insertdata($data);	
 
 		 	redirect(base_url(). "AdminController/inserted");
 		 	
@@ -283,7 +284,7 @@ class AdminController extends CI_Controller
 	{
 		$this->form_validation->set_rules('Item_name','Item Name','trim|required');
 		$this->form_validation->set_rules('item_description','Item Description','trim|required');
-		$this->form_validation->set_rules('amount','Amount ','trim|required|numeric');
+		$this->form_validation->set_rules('amount','Amount ');
 		$this->form_validation->set_rules('allowance','Allowance','trim|required');
 
 		if ($this->form_validation->run()) 
@@ -296,6 +297,7 @@ class AdminController extends CI_Controller
 			);
 
 			$this->Personal_model->add_item_deduction($data_deduction_item);
+		 	//redirect(base_url(). "AdminController/dedallowances");
 			redirect(base_url()."AdminController/added_item");
 		}
 
@@ -383,10 +385,10 @@ class AdminController extends CI_Controller
 	public function View_employee_profile()
 	{
 				//$id = $this->uri->segment(3)
-				// $this->Personal_model->get_emplo_profile($id);
+				$prof['profileinfo']=$this->Personal_model->get_emplo_profile($this->session->userdata('username'));
 				$this->load->view('include/header');
 				$this->load->view('include/navigation');
-				$this->load->view('employee/employee_profile');
+				$this->load->view('employee/employee_profile',$prof);
 				$this->load->view('include/source');
 				$this->load->view('include/footer');
 
@@ -446,6 +448,21 @@ class AdminController extends CI_Controller
 		$this->load->view('include/header');
 		$this->load->view('include/navigation');
 		$this->load->view('payroll/payroll_net_salary.php',$payrolls);
+		$this->load->view('include/source');
+		$this->load->view('include/footer');
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	#here functions for the deductions and allowances
+
+	public function View_employee_deductions($employee_id)
+	{
+		$items['persid'] = $this->Personal_model->getid($employee_id);
+		$items['itemsid'] = $this->Personal_model->getitemid();
+		$items['slaryscl'] = $this->Personal_model->getsalary($employee_id);
+		$this->load->view('include/header');
+		$this->load->view('include/navigation');
+		$this->load->view('deductions/deductallowances.php',$items);
 		$this->load->view('include/source');
 		$this->load->view('include/footer');
 	}
